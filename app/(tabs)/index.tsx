@@ -1,65 +1,65 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 export default function HomeScreen() {
+  const [month, setMonth] = useState('')
+  const [day, setDay] = useState('')
+  const [year, setYear] = useState('') 
+
+  const [americanDate, setAmericanDate] = useState<number | null>(null)
+  const [europeanDate, setEuropeanDate] = useState<number | null>(null)
+
+  const handleDateCalculation = () => {
+    const americanDate = parseInt(month.toString() + day.toString() + year.toString())
+    const europeanDate = parseInt(day.toString() + month.toString() + year.toString())
+
+    setAmericanDate(americanDate)
+    setEuropeanDate(europeanDate)
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
+    <SafeAreaView>
+        <Text style={styles.title}>Welcome to Perfect Date!</Text>
 
-        <DateTimePicker
-          value={new Date()}
-          mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+      <View style={styles.dateContainer}>
+        
+
+        <TextInput 
+          placeholder='mm'
+          keyboardType='numeric'
+          style={styles.input}
+          value={month}
+          onChangeText={setMonth}
         />
 
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <TextInput 
+          placeholder='dd'
+          keyboardType='numeric'
+          style={styles.input}
+          value={day}
+          onChangeText={setDay}
+        />
+
+        <TextInput 
+          placeholder='yyyy'
+          keyboardType='numeric'
+          style={styles.input}
+          value={year}
+          onChangeText={setYear}
+        />
+      </View>
+
+      <Button
+      title='Calculate Your Perfect Date'
+      onPress={handleDateCalculation}
+      />
+
+      <Text>{americanDate}</Text>
+
+    </SafeAreaView>
   );
 }
 
@@ -67,11 +67,16 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 8
+  },
+  title: {
+    fontSize: 30,
+    margin: "auto",
+    marginTop: 20
   },
   stepContainer: {
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   reactLogo: {
     height: 178,
@@ -80,4 +85,19 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
+  input: {
+    padding: 8,
+    height:50,
+    fontSize: 20,
+    borderColor: 'gray',
+    borderWidth: 1,
+    backgroundColor: 'white',
+    color: 'black',
+  },
+  dateContainer: {
+    flex: 10,
+    margin: "auto",
+    flexDirection: "row",
+    marginBottom: 10
+  }
 });
