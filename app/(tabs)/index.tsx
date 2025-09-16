@@ -98,6 +98,9 @@ const styles = StyleSheet.create({
     flex: 10,
     margin: "auto",
     flexDirection: "row",
-    marginBottom: 10
-  }
+    marginBottom: 60
+  },
+  button: {
+    maxWidth: 20
+  },
 });
