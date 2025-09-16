@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -20,43 +20,60 @@ export default function HomeScreen() {
     setEuropeanDate(europeanDate)
   }
 
+   const isPalindrome = () => {
+    if (americanDate === null || europeanDate === null) {return false}
+
+    const americanDateReversed = americanDate.toString().split("").reverse().join("")
+    const europeanDateReversed = europeanDate.toString().split("").reverse().join("")
+
+    if (americanDate.toString() === americanDateReversed) {return `${americanDate}`}
+  };
+
   return (
     <SafeAreaView>
+      <ScrollView>
         <Text style={styles.title}>Welcome to Perfect Date!</Text>
 
-      <View style={styles.dateContainer}>
-        
+        <View style={styles.dateContainer}>
+          
 
-        <TextInput 
-          placeholder='mm'
-          keyboardType='numeric'
-          style={styles.input}
-          value={month}
-          onChangeText={setMonth}
+          <TextInput 
+            placeholder='mm'
+            keyboardType='numeric'
+            style={styles.input}
+            value={month}
+            onChangeText={setMonth}
+          />
+
+          <TextInput 
+            placeholder='dd'
+            keyboardType='numeric'
+            style={styles.input}
+            value={day}
+            onChangeText={setDay}
+          />
+
+          <TextInput 
+            placeholder='yyyy'
+            keyboardType='numeric'
+            style={styles.input}
+            value={year}
+            onChangeText={setYear}
+          />
+        </View>
+
+        <Button
+        title='Calculate Your Perfect Date'
+        onPress={handleDateCalculation}
         />
 
-        <TextInput 
-          placeholder='dd'
-          keyboardType='numeric'
-          style={styles.input}
-          value={day}
-          onChangeText={setDay}
-        />
+        <View>
+          <Text> Number: {isPalindrome()}</Text>
 
-        <TextInput 
-          placeholder='yyyy'
-          keyboardType='numeric'
-          style={styles.input}
-          value={year}
-          onChangeText={setYear}
-        />
-      </View>
+          <Text>{isPalindrome() && "Hello"}</Text>
 
-      <Button
-      title='Calculate Your Perfect Date'
-      onPress={handleDateCalculation}
-      />
-
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
