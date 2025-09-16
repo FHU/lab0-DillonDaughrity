@@ -57,8 +57,6 @@ export default function HomeScreen() {
       onPress={handleDateCalculation}
       />
 
-      <Text>{americanDate}</Text>
-
     </SafeAreaView>
   );
 }
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     margin: "auto",
-    marginTop: 20
+    marginVertical: 20
   },
   stepContainer: {
     gap: 8,
@@ -98,7 +96,7 @@ const styles = StyleSheet.create({
     flex: 10,
     margin: "auto",
     flexDirection: "row",
-    marginBottom: 60
+    marginBottom: 80
   },
   button: {
     maxWidth: 20
