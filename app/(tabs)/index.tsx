@@ -55,7 +55,11 @@ export default function HomeScreen() {
   const isPerfectPower = () => {
     if (americanDate === null || europeanDate === null) {return false}
 
-    
+    for (let i = 2; i <= 9; i++) {
+      if (Math.pow(Number(americanDate), 1/i) % 1 === 0) {return true}
+
+      else if (Math.pow(Number(europeanDate), 1/i) % 1 === 0) {return true}
+    }
   }
 
   const isArmstrongNumber = () => {
@@ -73,12 +77,6 @@ export default function HomeScreen() {
   }
 
   const isMathEquation = () => {
-    // Day + Month = Year
-    // Day - Month = Year
-    // Day * Month = Year
-    // Day / Month = Year
-    // Day ^ Month = Year
-
     if (dayNum + monthNum === yearNum) {return `${dayNum} + ${monthNum} = ${yearNum}!`}
     else if (dayNum - monthNum === yearNum) {return `${dayNum} - ${monthNum} = ${yearNum}!`}
     else if (dayNum / monthNum === yearNum) {return `${dayNum} / ${monthNum} = ${yearNum}!`}
@@ -90,7 +88,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         <Text style={styles.title}>Welcome to Perfect Date!</Text>
 
         <View style={styles.dateContainer}>
@@ -127,43 +125,54 @@ export default function HomeScreen() {
 
         <Text style={styles.subTitle}>Results:</Text>
 
-        <View>
-          <Text style={styles.patternTitle}>Prime: {isPrime()}</Text>
+        <View style={styles.patternContainer}>
 
-          <Text>{isPrime() && `${americanDate}`}</Text>
-        </View>
+          <View>
+            <Text style={styles.patternTitle}>Prime: {isPrime()}</Text>
 
-        <View>
-          <Text style={styles.patternTitle}>Palindrome: {isPalindrome()}</Text>
+            <Text>{isPrime() && `${americanDate}`}</Text>
+          </View>
 
-          <Text>{isPalindrome() && "Yes"}</Text>
-        </View>
+          <View>
+            <Text style={styles.patternTitle}>Palindrome: {isPalindrome()}</Text>
 
-        <View>
-          <Text style={styles.patternTitle}>Pythagorean: {isPythagorean()}</Text>
+            <Text>{isPalindrome() && "Yes"}</Text>
+          </View>
 
-          <Text>{isPythagorean() && `${americanDate}`}</Text>
-        </View>
+          <View>
+            <Text style={styles.patternTitle}>Perfect Power: {isPerfectPower()}</Text>
 
-        <View>
-          <Text style={styles.patternTitle}>Armstrong Number: {isArmstrongNumber()}</Text>
+            <Text>{isPerfectPower() && "Yes"}</Text>
+          </View>
 
-          <Text>{isArmstrongNumber() && `${americanDate}`}</Text>
-        </View>
+          <View>
+            <Text style={styles.patternTitle}>Pythagorean: {isPythagorean()}</Text>
 
-        <View>
-          <Text style={styles.patternTitle}>Math Equations: {isMathEquation()}</Text>
+            <Text>{isPythagorean() && `${americanDate}`}</Text>
+          </View>
 
-          <Text>{isMathEquation() && `${americanDate}`}</Text>
-        </View>
+          <View>
+            <Text style={styles.patternTitle}>Armstrong Number: {isArmstrongNumber()}</Text>
 
-        <View>
-          <Text style={styles.colorTitle}>
-            American Hex Code: <Text style={{backgroundColor: americanHexCode}}>{americanHexCode}</Text>
+            <Text>{isArmstrongNumber() && `${americanDate}`}</Text>
+          </View>
+
+          <View>
+            <Text style={styles.patternTitle}>Math Equations: {isMathEquation()}</Text>
+
+            <Text>{isMathEquation() && `${americanDate}`}</Text>
+          </View>
+
+          
+          <Text style={styles.patternTitle}>
+            American Hex Code: <Text style={{backgroundColor: americanHexCode}}>{americanHexCode}</Text>  
+          </Text>
+          
+          <Text style={styles.patternTitle}>
             European Hex Code: <Text style={{backgroundColor: europeanHexCode}}>{europeanHexCode}</Text>
           </Text>
-        </View>
 
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -174,6 +183,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8
+  },
+  scrollView: {
+    alignItems: "center",
   },
   title: {
     fontSize: 30,
@@ -186,6 +198,8 @@ const styles = StyleSheet.create({
     marginVertical: 15
   },
   patternContainer: {
+    alignItems: "flex-start",
+    width: "95%"
   },
   colorContainer: {
     display: "flex",
@@ -197,10 +211,7 @@ const styles = StyleSheet.create({
   patternTitle: {
     fontSize: 20,
     marginLeft: 10,
-  },
-  colorTitle: {
-    fontSize: 20,
-    margin: "auto",
+    marginBottom: 5
   },
   stepContainer: {
     gap: 8,
