@@ -2,19 +2,21 @@ import { useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-
-
 export default function HomeScreen() {
   const [month, setMonth] = useState('')
   const [day, setDay] = useState('')
-  const [year, setYear] = useState('') 
+  const [year, setYear] = useState('')
 
-  const [americanDate, setAmericanDate] = useState<number | null>(null)
-  const [europeanDate, setEuropeanDate] = useState<number | null>(null)
+  const monthNum = parseInt(month)
+  const dayNum = parseInt(day)
+  const yearNum = parseInt(year)
+
+  const [americanDate, setAmericanDate] = useState<string | null>(null)
+  const [europeanDate, setEuropeanDate] = useState<string | null>(null)
 
   const handleDateCalculation = () => {
-    const americanDate = parseInt(month.toString() + day.toString() + year.toString())
-    const europeanDate = parseInt(day.toString() + month.toString() + year.toString())
+    const americanDate = month.toString() + day.toString() + year.toString()
+    const europeanDate = day.toString() + month.toString() + year.toString()
 
     setAmericanDate(americanDate)
     setEuropeanDate(europeanDate)
@@ -23,11 +25,27 @@ export default function HomeScreen() {
    const isPalindrome = () => {
     if (americanDate === null || europeanDate === null) {return false}
 
-    const americanDateReversed = americanDate.toString().split("").reverse().join("")
-    const europeanDateReversed = europeanDate.toString().split("").reverse().join("")
+    const americanDateReversed = americanDate.split("").reverse().join("")
+    const europeanDateReversed = europeanDate.split("").reverse().join("")
 
     if (americanDate.toString() === americanDateReversed) {return `${americanDate}`}
-  };
+
+    else if (europeanDate.toString() === europeanDateReversed) {return `${europeanDate}`}
+  }
+
+  const isPythagorean = () => {
+    if (dayNum**2 + monthNum**2 === yearNum**2) {return true}
+
+    else {return false}
+  }
+
+  const isPerfectPower = () => {
+    if (americanDate === null || europeanDate === null) {return false}
+
+    for (let i = 2; i++; i <= 9) {
+      if (Math.pow(parseInt(americanDate), 1/i) % 1 === 0) {return "WOOHOO"}
+    }
+  }
 
   return (
     <SafeAreaView>
@@ -35,7 +53,6 @@ export default function HomeScreen() {
         <Text style={styles.title}>Welcome to Perfect Date!</Text>
 
         <View style={styles.dateContainer}>
-          
 
           <TextInput 
             placeholder='mm'
@@ -67,12 +84,26 @@ export default function HomeScreen() {
         onPress={handleDateCalculation}
         />
 
+        <Text style={styles.subTitle}>Results:</Text>
+
         <View>
-          <Text> Number: {isPalindrome()}</Text>
+          <Text style={styles.patternTitle}>Number: {isPalindrome()}</Text>
 
-          <Text>{isPalindrome() && "Hello"}</Text>
-
+          <Text>{isPalindrome() && "Yes"}</Text>
         </View>
+
+        <View>
+          <Text style={styles.patternTitle}>Number: {isPythagorean()}</Text>
+
+          <Text>{isPythagorean() && `${americanDate}`}</Text>
+        </View>
+
+        <View>
+          <Text style={styles.patternTitle}>Number: {isPerfectPower()}</Text>
+
+          <Text>{isPerfectPower() && `${americanDate}`}</Text>
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -88,6 +119,17 @@ const styles = StyleSheet.create({
     fontSize: 30,
     margin: "auto",
     marginVertical: 20
+  },
+  subTitle: {
+    fontSize: 25,
+    margin: "auto",
+    marginVertical: 15
+  },
+  patternTitle: {
+    fontSize: 20,
+    marginLeft: 10,
+  },
+  patternContainer: {
   },
   stepContainer: {
     gap: 8,
@@ -113,7 +155,7 @@ const styles = StyleSheet.create({
     flex: 10,
     margin: "auto",
     flexDirection: "row",
-    marginBottom: 80
+    marginBottom: 20
   },
   button: {
     maxWidth: 20
