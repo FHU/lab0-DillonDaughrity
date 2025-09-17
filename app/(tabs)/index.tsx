@@ -7,12 +7,15 @@ export default function HomeScreen() {
   const [day, setDay] = useState('')
   const [year, setYear] = useState('')
 
-  const monthNum = parseInt(month)
-  const dayNum = parseInt(day)
-  const yearNum = parseInt(year)
+  const monthNum = Number(month)
+  const dayNum = Number(day)
+  const yearNum = Number(year)
 
   const [americanDate, setAmericanDate] = useState<string | null>(null)
   const [europeanDate, setEuropeanDate] = useState<string | null>(null)
+
+  const americanHexCode = `#${month}${day}${year}`
+  const europeanHexCode = `#${day}${month}${year}`
 
   const handleDateCalculation = () => {
     const americanDate = month.toString() + day.toString() + year.toString()
@@ -20,6 +23,16 @@ export default function HomeScreen() {
 
     setAmericanDate(americanDate)
     setEuropeanDate(europeanDate)
+  }
+
+  const isPrime = () => {
+    if (americanDate === null || europeanDate === null) {return false}
+
+    for (let i = 2; i < Number(americanDate); i++) {
+      if (Number(americanDate) % i === 0) {return "isn't prime"}
+    }
+
+    return "is prime"
   }
 
    const isPalindrome = () => {
@@ -42,9 +55,37 @@ export default function HomeScreen() {
   const isPerfectPower = () => {
     if (americanDate === null || europeanDate === null) {return false}
 
-    for (let i = 2; i++; i <= 9) {
-      if (Math.pow(parseInt(americanDate), 1/i) % 1 === 0) {return "WOOHOO"}
-    }
+    
+  }
+
+  const isArmstrongNumber = () => {
+    if (americanDate === null || europeanDate === null) {return false}
+
+    const numbers = americanDate.split("")
+
+    let armstrongSum = numbers.reduce((acc, num) => {
+      return acc + Math.pow(parseInt(num), numbers.length)
+    }, 0)
+
+    if (armstrongSum === Number(americanDate)) {return true}
+
+    else {return false}
+  }
+
+  const isMathEquation = () => {
+    // Day + Month = Year
+    // Day - Month = Year
+    // Day * Month = Year
+    // Day / Month = Year
+    // Day ^ Month = Year
+
+    if (dayNum + monthNum === yearNum) {return `${dayNum} + ${monthNum} = ${yearNum}!`}
+    else if (dayNum - monthNum === yearNum) {return `${dayNum} - ${monthNum} = ${yearNum}!`}
+    else if (dayNum / monthNum === yearNum) {return `${dayNum} / ${monthNum} = ${yearNum}!`}
+    else if (dayNum * monthNum === yearNum) {return `${dayNum} * ${monthNum} = ${yearNum}!`}
+    else if (dayNum ** monthNum === yearNum) {return `${dayNum}^${monthNum} = ${yearNum}!`}
+
+    else {return false}
   }
 
   return (
@@ -87,21 +128,40 @@ export default function HomeScreen() {
         <Text style={styles.subTitle}>Results:</Text>
 
         <View>
-          <Text style={styles.patternTitle}>Number: {isPalindrome()}</Text>
+          <Text style={styles.patternTitle}>Prime: {isPrime()}</Text>
+
+          <Text>{isPrime() && `${americanDate}`}</Text>
+        </View>
+
+        <View>
+          <Text style={styles.patternTitle}>Palindrome: {isPalindrome()}</Text>
 
           <Text>{isPalindrome() && "Yes"}</Text>
         </View>
 
         <View>
-          <Text style={styles.patternTitle}>Number: {isPythagorean()}</Text>
+          <Text style={styles.patternTitle}>Pythagorean: {isPythagorean()}</Text>
 
           <Text>{isPythagorean() && `${americanDate}`}</Text>
         </View>
 
         <View>
-          <Text style={styles.patternTitle}>Number: {isPerfectPower()}</Text>
+          <Text style={styles.patternTitle}>Armstrong Number: {isArmstrongNumber()}</Text>
 
-          <Text>{isPerfectPower() && `${americanDate}`}</Text>
+          <Text>{isArmstrongNumber() && `${americanDate}`}</Text>
+        </View>
+
+        <View>
+          <Text style={styles.patternTitle}>Math Equations: {isMathEquation()}</Text>
+
+          <Text>{isMathEquation() && `${americanDate}`}</Text>
+        </View>
+
+        <View>
+          <Text style={styles.colorTitle}>
+            American Hex Code: <Text style={{backgroundColor: americanHexCode}}>{americanHexCode}</Text>
+            European Hex Code: <Text style={{backgroundColor: europeanHexCode}}>{europeanHexCode}</Text>
+          </Text>
         </View>
 
       </ScrollView>
@@ -125,11 +185,22 @@ const styles = StyleSheet.create({
     margin: "auto",
     marginVertical: 15
   },
+  patternContainer: {
+  },
+  colorContainer: {
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  color: {
+    margin: 5
+  },
   patternTitle: {
     fontSize: 20,
     marginLeft: 10,
   },
-  patternContainer: {
+  colorTitle: {
+    fontSize: 20,
+    margin: "auto",
   },
   stepContainer: {
     gap: 8,
